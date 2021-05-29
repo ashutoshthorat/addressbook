@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -26,8 +27,19 @@ public class ContactModel {
 	private String emailid;
 	private String address;
 	
+	private String city;
+
+	private String pincode;
+	
+	
+	public ContactModel()
+	{
+		
+	}
+
+
 	public ContactModel(Long id, String firstname, String lastname, String mobileNo, LocalDateTime registeredDate,
-			LocalDateTime updatedDate, String emailid, String address) {
+			LocalDateTime updatedDate, String emailid, String address, String city, String pincode) {
 		super();
 		Id = id;
 		this.firstname = firstname;
@@ -37,10 +49,8 @@ public class ContactModel {
 		this.updatedDate = updatedDate;
 		this.emailid = emailid;
 		this.address = address;
-	}
-	public ContactModel()
-	{
-		
+		this.city = city;
+		this.pincode = pincode;
 	}
 	
 

@@ -1,5 +1,7 @@
 package com.bridgelabz.addressbook.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -36,5 +38,70 @@ public class ContactService implements IContactService {
 		}
 		
 	}
+
+	@Override
+	public Response updatecontact(String token, ContactDTO contactdto) {
+		Long id=tokenutil.decodeToken(token);
+		Optional<ContactModel> isContactPresent=contactrepository.findById(id);
+		if(isContactPresent.isPresent()) {
+			System.out.println(isContactPresent.get());
+			isContactPresent.get().setFirstname(contactdto.getFirstname());
+			isContactPresent.get().setAddress(contactdto.getAddress());
+			isContactPresent.get().setLastname(contactdto.getLastname());
+			isContactPresent.get().setEmailid(contactdto.getEmailid());
+			isContactPresent.get().setUpdatedDate(LocalDateTime.now());
+			isContactPresent.get().setMobileNo(contactdto.getMobileNo());
+			contactrepository.save(isContactPresent.get());
+			return new Response(200, "Contact Succefully Updated", null);
+			
+		}else {
+			throw new ContactRegisterException(400, "Contact is not saved!!");
+		}
+	
+	}
+
+	@Override
+	public List<ContactModel> getallcontact(String token) {
+		Long id=tokenutil.decodeToken(token);
+		Optional<ContactModel> isContactPresent=contactrepository.findById(id);
+		if(isContactPresent.isPresent()) {
+			List<ContactModel> getallcontacts=contactrepository.findAll();
+			return getallcontacts;
+		}else {
+			throw new ContactRegisterException(400, "Token is not valid!!");
+		}
+		
+	}
+
+	@Override
+	public Response deletecontact(String token) {
+		Long id=tokenutil.decodeToken(token);
+		Optional<ContactModel> isContactPresent=contactrepository.findById(id);
+		if(isContactPresent.isPresent()) {
+			contactrepository.delete(isContactPresent.get());
+			return new Response(200, "Contact Succefully deleted", null);
+			
+			
+		}else {
+			throw new ContactRegisterException(400, "Contact is not preset!!");
+		}
+	}
+
+	@Override
+	public List<ContactModel> getcity(String token, String city) {
+		Long id=tokenutil.decodeToken(token);
+		Optional<ContactModel> isContactPresent=contactrepository.findById(id);
+		if(isContactPresent.isPresent()) {
+			List<ContactModel> getcontactsbycity=contactrepository.findByCityStartsWith(city);
+			
+			return getcontactsbycity;
+			
+			
+		}else {
+			throw new ContactRegisterException(400, "Contact is not preset!!");
+		}
+	}
+	
+	
 
 }

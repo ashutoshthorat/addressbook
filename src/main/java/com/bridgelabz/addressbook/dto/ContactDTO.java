@@ -19,5 +19,9 @@ public class ContactDTO {
 	private String emailid;
 	@NotNull
 	private String address;
+	@NotNull
+	private String city;
+	@NotNull
+	private String pincode;
 
 }
